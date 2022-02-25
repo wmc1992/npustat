@@ -11,8 +11,8 @@ from datetime import datetime
 from blessed import Terminal
 from six.moves import cStringIO as StringIO
 
-from ascend_dmi import GetCardStatusWithAscendDmi
-from npu_smi import GetCardStatusWithNpuSmi
+from .ascend_dmi import GetCardStatusWithAscendDmi
+from .npu_smi import GetCardStatusWithNpuSmi
 
 IS_WINDOWS = "windows" in platform.platform().lower()
 
