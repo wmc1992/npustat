@@ -45,7 +45,12 @@ python版本要求：`python>=3.6`；
 > * 在`CANN`的`v5.0.2`及以后的版本中不再包含`toolbox` 工具包，而是迁移到了`mindx`中，需要到`mindx`的软件下载链接中进行下载；
 
 ## 安装说明
+ 
+从 [PyPI](https://pypi.org/project/npustat/) 进行安装:
 
+```
+pip install npustat
+```
 
 ## 使用说明
 

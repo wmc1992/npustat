@@ -2,7 +2,7 @@
 The npustat module.
 """
 
-__version__ = "0.0.1"
+__version__ = "0.0.2"
 
 from .ascend_dmi import GetCardStatusWithAscendDmi
 from .cli import main, print_atlas_stat, loop_atlas_stat
