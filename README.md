@@ -130,7 +130,7 @@ machine_name  Mon Dec 20 22:38:59 2021  ascend-dmi version: 2.0.3
 
 ## Reference
 
-本项目的灵感、排版展示、以及代码的整体结构都是源自 [`gpustat`](https://github.com/wookayin/gpustat)，本项目只是将其工作适配到了华为Atlas设备上；
+[`gpustat`](https://github.com/wookayin/gpustat)
 
 ## License
 
