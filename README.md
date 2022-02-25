@@ -95,6 +95,12 @@ optional arguments:
   -v, --version         show program's version number and exit
 ```
 
+#### 常规模式与紧凑模式对比
+
+| `npustat --watch` | `npustat --watch --compact` |
+| :-: | :-: |
+| ![](./docs/normal.png) | ![](./docs/compact.png) |
+
 #### 另外：
 
 比较遗憾的是，目前我没有在任何华为的官方文档中找到获取每个设备上运行了哪些进程的功能，在昇腾论坛的询问结果也是如此：[【Atlas 300I 推理卡】怎样查看有哪些进程正在上面运行？
