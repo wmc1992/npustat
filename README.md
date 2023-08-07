@@ -69,8 +69,8 @@ npustat --watch
 可选参数如下：
 
 ```
-usage: cli.py [-h] [--json] [-i [INTERVAL]] [--no-header] [--no-title]
-              [--use-npu-smi] [--show-power] [--compact] [--debug] [-v]
+usage: npustat [-h] [--json] [-i [INTERVAL]] [--no-header] [--no-title]
+               [--use-npu-smi] [--show-power] [--compact] [--debug] [-v]
 
 optional arguments:
   -h, --help            show this help message and exit
