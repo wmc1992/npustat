@@ -61,5 +61,6 @@ target/
 
 .idea
 .DS_Store
-commit_github.sh
-
+.vscode
+.env
+shell_commit.sh
