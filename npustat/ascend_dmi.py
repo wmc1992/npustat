@@ -16,12 +16,51 @@ class GetCardStatusWithAscendDmi:
         cmd = "ascend-dmi -v"  # 获取Ascend-DMI的版本
         return os.popen(cmd).read().strip()
 
+    def devices_to_cards(self, server_type, devices):
+        cards = []
+        lastone = lambda : {"type": server_type} if len(cards) == 0 else cards[-1]
+        for device in devices:
+            card = lastone()
+            card_id = card.get("card_id")
+            if card_id is None:
+                card["card_id"] = device["card_id"]
+                chips = [device]
+                card["devices"] = chips
+                cards.append(card)
+            elif card_id == device["card_id"]:
+                chips = card["devices"]
+                chips.append(device)
+                card["devices"] = chips
+                card["power"] = self.get_card_power(card)
+            else:
+                card = {"type": server_type,
+                        "card_id": device["card_id"],
+                        "devices": [device]}
+                cards.append(card)
+        return cards
+
     def get_card_entry(self):
         cmd = "ascend-dmi -i --format json"  # 使用Ascend-DMI做实时信息统计
         ascend_info_json = json.loads(os.popen(cmd).read())
 
         card_entry_list = []
-        for card_info in ascend_info_json["hardware_brief"]["cards"]:
+        hardware_brief = ascend_info_json.get("hardware_brief")
+        if hardware_brief is None:
+            return card_entry_list
+        cards = hardware_brief.get("cards")
+        if cards is None:
+            cards = []
+            server = hardware_brief.get("server")
+            if server is None:
+                return card_entry_list
+            server_type = server.get("type")
+            if server_type is None:
+                return card_entry_list
+            devices = server.get("devices")
+            if devices is None:
+                return card_entry_list
+            cards = self.devices_to_cards(server_type, devices)
+        for card_info in cards:
             card_entry = dict()
             card_entry["card_id"] = card_info["card_id"]
             card_entry["type"] = card_info["type"]
@@ -58,12 +97,26 @@ class GetCardStatusWithAscendDmi:
             temp = int(temp)
         return temp
 
+    def parse_power(self, pw):
+        power = 0.0
+        pw = pw.strip()
+        if pw.endswith("W"):
+            pw = pw[:-1].strip()
+            try:
+                power = float(pw)
+            except Exception:
+                return power
+            return power
+
     def get_power(self, power):
-        power = power.strip()
-        if power.endswith("W"):
-            power = power[:-1].strip()
-        try:
-            power = float(power)
-            return f"{power:.2f} W"
-        except Exception:
-            return f"{power} W"
+        power = self.parse_power(power)
+        return f"{power:.2f} W"
+
+    def get_card_power(self, card):
+        chips = card.get("devices", {})
+        power = 0.0
+        for chip in chips:
+            power += self.parse_power(
+                chip.get("power_information", {}).get(
+                    "realtime_power", "0.00 W"))
+        return f"{power:.2f} W"
